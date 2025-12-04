@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russian Verbs Master</title>
+    <meta name="description" content="Learn Russian verbs with audio and examples">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png">
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-color: #3498db;
+            --card-bg: #2d2d2d;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .light-mode {
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --accent-color: #3498db;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-hidden {
+            display: none;
+        }
+
+        .filter-btn {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-color);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #search {
+            width: 70%;
+            padding: 12px 20px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-color);
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .verbs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .verb-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .verb-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .verb-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .verb-russian {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .verb-translation {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .verb-example {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .example-text {
+            font-style: italic;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .example-translation {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        .audio-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .audio-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .audio-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .conjugation {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .conjugation span {
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            background: var(--bg-primary);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .contact-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        .stats {
+            margin: 10px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .install-info {
+            margin: 15px 0;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .audio-loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .verbs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            #search {
+                width: 90%;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+
+            .audio-controls {
+                flex-direction: column;
+            }
+
+            .audio-btn {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verbs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="container">
+        <header>
+            <h1 id="app-title">Russian Verbs Master</h1>
+            <p class="subtitle" id="app-subtitle">Learn 50 essential Russian verbs with audio and examples</p>
+            
+            <div class="controls">
+                <button class="btn" id="theme-toggle">🌙 Light Mode</button>
+                <button class="btn btn-outline" id="language-toggle">🇯🇵 日本語</button>
+                <button class="btn btn-hidden" id="install-btn">📱 Install App</button>
+                <button class="btn btn-success btn-hidden" id="installed-btn">✅ Installed</button>
+            </div>
+
+            <div class="install-info" id="install-info">
+                For best experience: Tap 📱 in your browser and select "Add to Home Screen"
+            </div>
+
+            <div class="controls">
+                <button class="btn filter-btn active" data-filter="all">All Verbs</button>
+                <button class="btn filter-btn" data-filter="common">Common Verbs</button>
+                <button class="btn filter-btn" data-filter="action">Action Verbs</button>
+                <button class="btn filter-btn" data-filter="daily">Daily Life</button>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="search" placeholder="Search verbs...">
+            </div>
+            <div class="stats" id="stats">Showing 50 verbs</div>
+        </header>
+        
+        <main>
+            <div class="verbs-grid" id="verbs-container">
+                <!-- Verbs will be loaded here by JavaScript -->
+            </div>
+        </main>
+        
+        <footer>
+            <p id="contact-text">Contact us<br>
+                <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Language texts
+        const translations = {
+            en: {
+                title: "Russian Verbs Master",
+                subtitle: "Learn 50 essential Russian verbs with audio and examples",
+                searchPlaceholder: "Search verbs...",
+                themeToggle: "🌙 Light Mode",
+                languageToggle: "🇯🇵 日本語",
+                installBtn: "📱 Install App",
+                installedBtn: "✅ Installed",
+                contact: "Contact us",
+                playVerb: "Play Verb",
+                playExample: "Play Example",
+                playing: "Playing...",
+                stats: "Showing {count} verbs",
+                installInfo: "For best experience: Tap 📱 in your browser and select \"Add to Home Screen\"",
+                installInstructions: "To install this app: look for the Add to Home Screen option in your browser menu."
+            },
+            ja: {
+                title: "ロシア語動詞マスター",
+                subtitle: "音声付きで50の基本ロシア語動詞を学びましょう",
+                searchPlaceholder: "動詞を検索...",
+                themeToggle: "🌙 ライトモード",
+                languageToggle: "🇺🇸 English",
+                installBtn: "📱 アプリをインストール",
+                installedBtn: "✅ インストール済み",
+                contact: "お問い合わせ",
+                playVerb: "動詞を再生",
+                playExample: "例文を再生",
+                playing: "再生中...",
+                stats: "{count}個の動詞を表示中",
+                installInfo: "より良い体験のために: ブラウザの📱をタップして「ホーム画面に追加」を選択してください",
+                installInstructions: "このアプリをインストールするには: ブラウザメニューで「ホーム画面に追加」オプションを探してください。"
+            }
+        };
+
+        // Verb data - 50 Russian verbs for English/Japanese learners
+        const verbs = [
+            {
+                russian: "быть",
+                translations: { en: "to be", ja: "～である" },
+                examples: {
+                    en: "Я студент. (I am a student)",
+                    ja: "Я студент. (私は学生です)",
+                    audio: "Я студент."
+                },
+                conjugation: ["есть", "был", "была", "были"],
+                category: "common"
+            },
+            {
+                russian: "иметь",
+                translations: { en: "to have", ja: "持つ" },
+                examples: {
+                    en: "У меня есть книга. (I have a book)",
+                    ja: "У меня есть книга. (私は本を持っています)",
+                    audio: "У меня есть книга."
+                },
+                conjugation: ["имею", "имеешь", "имеет", "имеют"],
+                category: "common"
+            },
+            {
+                russian: "делать",
+                translations: { en: "to do", ja: "する" },
+                examples: {
+                    en: "Что ты делаешь? (What are you doing?)",
+                    ja: "Что ты делаешь? (何をしていますか?)",
+                    audio: "Что ты делаешь?"
+                },
+                conjugation: ["делаю", "делаешь", "делает", "делают"],
+                category: "common"
+            },
+            {
+                russian: "говорить",
+                translations: { en: "to speak", ja: "話す" },
+                examples: {
+                    en: "Я говорю по-русски. (I speak Russian)",
+                    ja: "Я говорю по-русски. (私はロシア語を話します)",
+                    audio: "Я говорю по-русски."
+                },
+                conjugation: ["говорю", "говоришь", "говорит", "говорят"],
+                category: "common"
+            },
+            {
+                russian: "мочь",
+                translations: { en: "can", ja: "～できる" },
+                examples: {
+                    en: "Я могу плавать. (I can swim)",
+                    ja: "Я могу плавать. (私は泳ぐことができます)",
+                    audio: "Я могу плавать."
+                },
+                conjugation: ["могу", "можешь", "может", "могут"],
+                category: "common"
+            },
+            {
+                russian: "идти",
+                translations: { en: "to go", ja: "行く" },
+                examples: {
+                    en: "Я иду в школу. (I go to school)",
+                    ja: "Я иду в школу. (私は学校へ行きます)",
+                    audio: "Я иду в школу."
+                },
+                conjugation: ["иду", "идёшь", "идёт", "идут"],
+                category: "action"
+            },
+            {
+                russian: "видеть",
+                translations: { en: "to see", ja: "見る" },
+                examples: {
+                    en: "Я вижу птицу. (I see a bird)",
+                    ja: "Я вижу птицу. (私は鳥を見ます)",
+                    audio: "Я вижу птицу."
+                },
+                conjugation: ["вижу", "видишь", "видит", "видят"],
+                category: "action"
+            },
+            {
+                russian: "хотеть",
+                translations: { en: "to want", ja: "～したい" },
+                examples: {
+                    en: "Я хочу пить кофе. (I want to drink coffee)",
+                    ja: "Я хочу пить кофе. (私はコーヒーが飲みたい)",
+                    audio: "Я хочу пить кофе."
+                },
+                conjugation: ["хочу", "хочешь", "хочет", "хотят"],
+                category: "common"
+            },
+            {
+                russian: "приходить",
+                translations: { en: "to come", ja: "来る" },
+                examples: {
+                    en: "Он приходит из России. (He comes from Russia)",
+                    ja: "Он приходит из России. (彼はロシアから来ます)",
+                    audio: "Он приходит из России."
+                },
+                conjugation: ["прихожу", "приходишь", "приходит", "приходят"],
+                category: "action"
+            },
+            {
+                russian: "должен",
+                translations: { en: "must", ja: "～しなければならない" },
+                examples: {
+                    en: "Я должен учиться. (I must study)",
+                    ja: "Я должен учиться. (私は勉強しなければならない)",
+                    audio: "Я должен учиться."
+                },
+                conjugation: ["должен", "должна", "должно", "должны"],
+                category: "common"
+            },
+            {
+                russian: "делать",
+                translations: { en: "to make", ja: "作る" },
+                examples: {
+                    en: "Я делаю торт. (I make a cake)",
+                    ja: "Я делаю торт. (私はケーキを作ります)",
+                    audio: "Я делаю торт."
+                },
+                conjugation: ["делаю", "делаешь", "делает", "делают"],
+                category: "daily"
+            },
+            {
+                russian: "брать",
+                translations: { en: "to take", ja: "取る" },
+                examples: {
+                    en: "Возьмите стул. (Take a chair)",
+                    ja: "Возьмите стул. (椅子をお取りください)",
+                    audio: "Возьмите стул."
+                },
+                conjugation: ["беру", "берёшь", "берёт", "берут"],
+                category: "action"
+            },
+            {
+                russian: "находить",
+                translations: { en: "to find", ja: "見つける" },
+                examples: {
+                    en: "Я нахожу ключи. (I find keys)",
+                    ja: "Я нахожу ключи. (私は鍵を見つけます)",
+                    audio: "Я нахожу ключи."
+                },
+                conjugation: ["нахожу", "находишь", "находит", "находят"],
+                category: "action"
+            },
+            {
+                russian: "давать",
+                translations: { en: "to give", ja: "与える" },
+                examples: {
+                    en: "Я даю подарок. (I give a gift)",
+                    ja: "Я даю подарок. (私は贈り物をあげます)",
+                    audio: "Я даю подарок."
+                },
+                conjugation: ["даю", "даёшь", "даёт", "дают"],
+                category: "action"
+            },
+            {
+                russian: "знать",
+                translations: { en: "to know", ja: "知っている" },
+                examples: {
+                    en: "Я знаю ответ. (I know the answer)",
+                    ja: "Я знаю ответ. (私は答えを知っています)",
+                    audio: "Я знаю ответ."
+                },
+                conjugation: ["знаю", "знаешь", "знает", "знают"],
+                category: "common"
+            },
+            {
+                russian: "читать",
+                translations: { en: "to read", ja: "読む" },
+                examples: {
+                    en: "Я читаю книгу. (I read a book)",
+                    ja: "Я читаю книгу. (私は本を読みます)",
+                    audio: "Я читаю книгу."
+                },
+                conjugation: ["читаю", "читаешь", "читает", "читают"],
+                category: "daily"
+            },
+            {
+                russian: "писать",
+                translations: { en: "to write", ja: "書く" },
+                examples: {
+                    en: "Я пишу письмо. (I write a letter)",
+                    ja: "Я пишу письмо. (私は手紙を書きます)",
+                    audio: "Я пишу письмо."
+                },
+                conjugation: ["пишу", "пишешь", "пишет", "пишут"],
+                category: "daily"
+            },
+            {
+                russian: "ходить",
+                translations: { en: "to walk", ja: "歩く" },
+                examples: {
+                    en: "Я хожу в парк. (I walk in the park)",
+                    ja: "Я хожу в парк. (私は公園を歩きます)",
+                    audio: "Я хожу в парк."
+                },
+                conjugation: ["хожу", "ходишь", "ходит", "ходят"],
+                category: "action"
+            },
+            {
+                russian: "стоять",
+                translations: { en: "to stand", ja: "立つ" },
+                examples: {
+                    en: "Стой здесь. (Stand here)",
+                    ja: "Стой здесь. (ここに立ってください)",
+                    audio: "Стой здесь."
+                },
+                conjugation: ["стою", "стоишь", "стоит", "стоят"],
+                category: "action"
+            },
+            {
+                russian: "сидеть",
+                translations: { en: "to sit", ja: "座る" },
+                examples: {
+                    en: "Сиди здесь. (Sit here)",
+                    ja: "Сиди здесь. (ここに座ってください)",
+                    audio: "Сиди здесь."
+                },
+                conjugation: ["сижу", "сидишь", "сидит", "сидят"],
+                category: "action"
+            },
+            {
+                russian: "есть",
+                translations: { en: "to eat", ja: "食べる" },
+                examples: {
+                    en: "Я ем хлеб. (I eat bread)",
+                    ja: "Я ем хлеб. (私はパンを食べます)",
+                    audio: "Я ем хлеб."
+                },
+                conjugation: ["ем", "ешь", "ест", "едят"],
+                category: "daily"
+            },
+            {
+                russian: "пить",
+                translations: { en: "to drink", ja: "飲む" },
+                examples: {
+                    en: "Я пью воду. (I drink water)",
+                    ja: "Я пью воду. (私は水を飲みます)",
+                    audio: "Я пью воду."
+                },
+                conjugation: ["пью", "пьёшь", "пьёт", "пьют"],
+                category: "daily"
+            },
+            {
+                russian: "спать",
+                translations: { en: "to sleep", ja: "眠る" },
+                examples: {
+                    en: "Я сплю. (I sleep)",
+                    ja: "Я сплю. (私は眠ります)",
+                    audio: "Я сплю."
+                },
+                conjugation: ["сплю", "спишь", "спит", "спят"],
+                category: "daily"
+            },
+            {
+                russian: "работать",
+                translations: { en: "to work", ja: "働く" },
+                examples: {
+                    en: "Я работаю в офисе. (I work in an office)",
+                    ja: "Я работаю в офисе. (私はオフィスで働きます)",
+                    audio: "Я работаю в офисе."
+                },
+                conjugation: ["работаю", "работаешь", "работает", "работают"],
+                category: "daily"
+            },
+            {
+                russian: "учиться",
+                translations: { en: "to study", ja: "学ぶ" },
+                examples: {
+                    en: "Я учу русский язык. (I study Russian)",
+                    ja: "Я учу русский язык. (私はロシア語を学びます)",
+                    audio: "Я учу русский язык."
+                },
+                conjugation: ["учусь", "учишься", "учится", "учатся"],
+                category: "common"
+            },
+            {
+                russian: "понимать",
+                translations: { en: "to understand", ja: "理解する" },
+                examples: {
+                    en: "Я понимаю вопрос. (I understand the question)",
+                    ja: "Я понимаю вопрос. (私は質問を理解しています)",
+                    audio: "Я понимаю вопрос."
+                },
+                conjugation: ["понимаю", "понимаешь", "понимает", "понимают"],
+                category: "common"
+            },
+            {
+                russian: "думать",
+                translations: { en: "to think", ja: "考える" },
+                examples: {
+                    en: "Я думаю о тебе. (I think about you)",
+                    ja: "Я думаю о тебе. (あなたのことを考えています)",
+                    audio: "Я думаю о тебе."
+                },
+                conjugation: ["думаю", "думаешь", "думает", "думают"],
+                category: "common"
+            },
+            {
+                russian: "покупать",
+                translations: { en: "to buy", ja: "買う" },
+                examples: {
+                    en: "Я покупаю овощи. (I buy vegetables)",
+                    ja: "Я покупаю овощи. (私たちは野菜を買います)",
+                    audio: "Я покупаю овощи."
+                },
+                conjugation: ["покупаю", "покупаешь", "покупает", "покупают"],
+                category: "daily"
+            },
+            {
+                russian: "продавать",
+                translations: { en: "to sell", ja: "売る" },
+                examples: {
+                    en: "Я продаю машину. (I sell a car)",
+                    ja: "Я продаю машину. (彼は車を売ります)",
+                    audio: "Я продаю машину."
+                },
+                conjugation: ["продаю", "продаёшь", "продаёт", "продают"],
+                category: "daily"
+            },
+            {
+                russian: "платить",
+                translations: { en: "to pay", ja: "支払う" },
+                examples: {
+                    en: "Я плачу кредитной картой. (I pay with credit card)",
+                    ja: "Я плачу кредитной картой. (私はクレジットカードで支払います)",
+                    audio: "Я плачу кредитной картой."
+                },
+                conjugation: ["плачу", "платишь", "платит", "платят"],
+                category: "daily"
+            },
+            {
+                russian: "открывать",
+                translations: { en: "to open", ja: "開ける" },
+                examples: {
+                    en: "Открой дверь. (Open the door)",
+                    ja: "Открой дверь. (ドアを開けてください)",
+                    audio: "Открой дверь."
+                },
+                conjugation: ["открываю", "открываешь", "открывает", "открывают"],
+                category: "action"
+            },
+            {
+                russian: "закрывать",
+                translations: { en: "to close", ja: "閉める" },
+                examples: {
+                    en: "Закрой окно. (Close the window)",
+                    ja: "Закрой окно. (窓を閉めてください)",
+                    audio: "Закрой окно."
+                },
+                conjugation: ["закрываю", "закрываешь", "закрывает", "закрывают"],
+                category: "action"
+            },
+            {
+                russian: "начинать",
+                translations: { en: "to begin", ja: "始める" },
+                examples: {
+                    en: "Я начинаю в 8 часов. (I begin at 8 o'clock)",
+                    ja: "Я начинаю в 8 часов. (私は8時に始めます)",
+                    audio: "Я начинаю в 8 часов."
+                },
+                conjugation: ["начинаю", "начинаешь", "начинает", "начинают"],
+                category: "action"
+            },
+            {
+                russian: "заканчивать",
+                translations: { en: "to end", ja: "終える" },
+                examples: {
+                    en: "Фильм заканчивается поздно. (The movie ends late)",
+                    ja: "Фильм заканчивается поздно. (映画は遅くに終わります)",
+                    audio: "Фильм заканчивается поздно."
+                },
+                conjugation: ["заканчиваю", "заканчиваешь", "заканчивает", "заканчивают"],
+                category: "action"
+            },
+            {
+                russian: "ждать",
+                translations: { en: "to wait", ja: "待つ" },
+                examples: {
+                    en: "Подожди немного. (Wait a moment)",
+                    ja: "Подожди немного. (少し待ってください)",
+                    audio: "Подожди немного."
+                },
+                conjugation: ["жду", "ждёшь", "ждёт", "ждут"],
+                category: "action"
+            },
+            {
+                russian: "встречать",
+                translations: { en: "to meet", ja: "会う" },
+                examples: {
+                    en: "Я встречаю друзей. (I meet friends)",
+                    ja: "Я встречаю друзей. (私は友達に会います)",
+                    audio: "Я встречаю друзей."
+                },
+                conjugation: ["встречаю", "встречаешь", "встречает", "встречают"],
+                category: "daily"
+            },
+            {
+                russian: "звонить",
+                translations: { en: "to call", ja: "電話する" },
+                examples: {
+                    en: "Я звоню матери. (I call my mother)",
+                    ja: "Я звоню матери. (私は母に電話します)",
+                    audio: "Я звоню матери."
+                },
+                conjugation: ["звоню", "звонишь", "звонит", "звонят"],
+                category: "daily"
+            },
+            {
+                russian: "слышать",
+                translations: { en: "to hear", ja: "聞く" },
+                examples: {
+                    en: "Я слышу музыку. (I hear music)",
+                    ja: "Я слышу музыку. (私は音楽が聞こえます)",
+                    audio: "Я слышу музыку."
+                },
+                conjugation: ["слышу", "слышишь", "слышит", "слышат"],
+                category: "action"
+            },
+            {
+                russian: "слушать",
+                translations: { en: "to listen", ja: "聴く" },
+                examples: {
+                    en: "Слушай меня. (Listen to me)",
+                    ja: "Слушай меня. (私の話を聞いてください)",
+                    audio: "Слушай меня."
+                },
+                conjugation: ["слушаю", "слушаешь", "слушает", "слушают"],
+                category: "action"
+            },
+            {
+                russian: "искать",
+                translations: { en: "to search", ja: "探す" },
+                examples: {
+                    en: "Я ищу ключи. (I search for keys)",
+                    ja: "Я ищу ключи. (私は鍵を探しています)",
+                    audio: "Я ищу ключи."
+                },
+                conjugation: ["ищу", "ищешь", "ищет", "ищут"],
+                category: "action"
+            },
+            {
+                russian: "спрашивать",
+                translations: { en: "to ask", ja: "尋ねる" },
+                examples: {
+                    en: "Спроси дорогу. (Ask for directions)",
+                    ja: "Спроси дорогу. (道を尋ねてください)",
+                    audio: "Спроси дорогу."
+                },
+                conjugation: ["спрашиваю", "спрашиваешь", "спрашивает", "спрашивают"],
+                category: "common"
+            },
+            {
+                russian: "отвечать",
+                translations: { en: "to answer", ja: "答える" },
+                examples: {
+                    en: "Ответь на вопрос. (Answer the question)",
+                    ja: "Ответь на вопрос. (質問に答えてください)",
+                    audio: "Ответь на вопрос."
+                },
+                conjugation: ["отвечаю", "отвечаешь", "отвечает", "отвечают"],
+                category: "common"
+            },
+            {
+                russian: "помогать",
+                translations: { en: "to help", ja: "助ける" },
+                examples: {
+                    en: "Помоги мне. (Help me)",
+                    ja: "Помоги мне. (手伝ってください)",
+                    audio: "Помоги мне."
+                },
+                conjugation: ["помогаю", "помогаешь", "помогает", "помогают"],
+                category: "common"
+            },
+            {
+                russian: "жить",
+                translations: { en: "to live", ja: "住む" },
+                examples: {
+                    en: "Я живу в Москве. (I live in Moscow)",
+                    ja: "Я живу в Москве. (私はモスクワに住んでいます)",
+                    audio: "Я живу в Москве."
+                },
+                conjugation: ["живу", "живёшь", "живёт", "живут"],
+                category: "daily"
+            },
+            {
+                russian: "посещать",
+                translations: { en: "to visit", ja: "訪れる" },
+                examples: {
+                    en: "Я посещаю музей. (I visit a museum)",
+                    ja: "Я посещаю музей. (私たちは博物館を訪れます)",
+                    audio: "Я посещаю музей."
+                },
+                conjugation: ["посещаю", "посещаешь", "посещает", "посещают"],
+                category: "daily"
+            },
+            {
+                russian: "путешествовать",
+                translations: { en: "to travel", ja: "旅行する" },
+                examples: {
+                    en: "Я путешествую в Японию. (I travel to Japan)",
+                    ja: "Я путешествую в Японию. (彼は日本へ旅行します)",
+                    audio: "Я путешествую в Японию."
+                },
+                conjugation: ["путешествую", "путешествуешь", "путешествует", "путешествуют"],
+                category: "daily"
+            },
+            {
+                russian: "учиться",
+                translations: { en: "to study", ja: "勉強する" },
+                examples: {
+                    en: "Я учусь на врача. (I study to be a doctor)",
+                    ja: "Я учусь на врача. (私は医学を勉強しています)",
+                    audio: "Я учусь на врача."
+                },
+                conjugation: ["учусь", "учишься", "учится", "учатся"],
+                category: "daily"
+            },
+            {
+                russian: "играть",
+                translations: { en: "to play", ja: "遊ぶ" },
+                examples: {
+                    en: "Дети играют на улице. (Children play outside)",
+                    ja: "Дети играют на улице. (子供たちは外で遊びます)",
+                    audio: "Дети играют на улице."
+                },
+                conjugation: ["играю", "играешь", "играет", "играют"],
+                category: "daily"
+            },
+            {
+                russian: "петь",
+                translations: { en: "to sing", ja: "歌う" },
+                examples: {
+                    en: "Я пою песню. (I sing a song)",
+                    ja: "Я пою песню. (私たちは歌を歌います)",
+                    audio: "Я пою песню."
+                },
+                conjugation: ["пою", "поёшь", "поёт", "поют"],
+                category: "daily"
+            },
+            {
+                russian: "танцевать",
+                translations: { en: "to dance", ja: "踊る" },
+                examples: {
+                    en: "Я танцую хорошо. (I dance well)",
+                    ja: "Я танцую хорошо. (彼らは上手に踊ります)",
+                    audio: "Я танцую хорошо."
+                },
+                conjugation: ["танцую", "танцуешь", "танцует", "танцуют"],
+                category: "daily"
+            },
+            {
+                russian: "смеяться",
+                translations: { en: "to laugh", ja: "笑う" },
+                examples: {
+                    en: "Я смеюсь над шуткой. (I laugh at the joke)",
+                    ja: "Я смеюсь над шуткой. (私たちはジョークで笑います)",
+                    audio: "Я смеюсь над шуткой."
+                },
+                conjugation: ["смеюсь", "смеёшься", "смеётся", "смеются"],
+                category: "daily"
+            },
+            {
+                russian: "плакать",
+                translations: { en: "to cry", ja: "泣く" },
+                examples: {
+                    en: "Ребёнок плачет. (The child cries)",
+                    ja: "Ребёнок плачет. (赤ちゃんが泣いています)",
+                    audio: "Ребёнок плачет."
+                },
+                conjugation: ["плачу", "плачешь", "плачет", "плачут"],
+                category: "daily"
+            }
+        ];
+
+        let currentLanguage = 'en';
+        let currentTheme = 'dark';
+        let currentFilter = 'all';
+        let currentSpeech = null;
+        let deferredPrompt = null;
+        let isInstalled = false;
+
+        // Initialize app
+        function initApp() {
+            renderVerbs();
+            setupEventListeners();
+            registerServiceWorker();
+            updateStats();
+            checkPWAInstallation();
+        }
+
+        // Check if PWA is already installed
+        function checkPWAInstallation() {
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                isInstalled = true;
+                updateInstallButton();
+            }
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                updateInstallButton();
+            });
+
+            window.addEventListener('appinstalled', () => {
+                isInstalled = true;
+                deferredPrompt = null;
+                updateInstallButton();
+                showInstallSuccess();
+            });
+        }
+
+        // Update install button state
+        function updateInstallButton() {
+            const installBtn = document.getElementById('install-btn');
+            const installedBtn = document.getElementById('installed-btn');
+            const installInfo = document.getElementById('install-info');
+
+            if (isInstalled) {
+                installBtn.classList.add('btn-hidden');
+                installedBtn.classList.remove('btn-hidden');
+                installInfo.style.display = 'none';
+            } else if (deferredPrompt) {
+                installBtn.classList.remove('btn-hidden');
+                installedBtn.classList.add('btn-hidden');
+                installInfo.style.display = 'block';
+            } else {
+                installBtn.classList.add('btn-hidden');
+                installedBtn.classList.add('btn-hidden');
+                installInfo.style.display = 'block';
+            }
+        }
+
+        // Show install success message
+        function showInstallSuccess() {
+            console.log('PWA was installed successfully');
+        }
+
+        // Install PWA
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        isInstalled = true;
+                        updateInstallButton();
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                const installInfo = document.getElementById('install-info');
+                installInfo.innerHTML = translations[currentLanguage].installInstructions;
+                installInfo.style.display = 'block';
+            }
+        }
+
+        // Render verbs to the grid
+        function renderVerbs(filter = "all") {
+            const container = document.getElementById('verbs-container');
+            container.innerHTML = '';
+            
+            const filteredVerbs = filter === "all" ? verbs : verbs.filter(verb => verb.category === filter);
+            
+            filteredVerbs.forEach(verb => {
+                const card = document.createElement('div');
+                card.className = 'verb-card';
+                card.innerHTML = `
+                    <div class="verb-header">
+                        <div class="verb-russian">${verb.russian}</div>
+                        <div class="verb-translation">${verb.translations[currentLanguage]}</div>
+                    </div>
+                    <div class="verb-example">
+                        <div class="example-text">${verb.examples[currentLanguage].split(' (')[0]}</div>
+                        <div class="example-translation">${verb.examples[currentLanguage].split(' (')[1]?.replace(')', '') || ''}</div>
+                    </div>
+                    <div class="conjugation">
+                        ${verb.conjugation.map(form => `<span>${form}</span>`).join('')}
+                    </div>
+                    <div class="audio-controls">
+                        <button class="audio-btn" onclick="playAudio('${verb.russian}', this)">
+                            🔊 ${translations[currentLanguage].playVerb}
+                        </button>
+                        <button class="audio-btn" onclick="playExample('${verb.russian}', this)">
+                            🎵 ${translations[currentLanguage].playExample}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            updateStats();
+        }
+
+        // Update stats
+        function updateStats() {
+            const filteredVerbs = currentFilter === "all" ? verbs : verbs.filter(verb => verb.category === currentFilter);
+            const statsElement = document.getElementById('stats');
+            const text = translations[currentLanguage].stats.replace('{count}', filteredVerbs.length);
+            statsElement.textContent = text;
+        }
+
+        // Play verb audio
+        function playAudio(word, button) {
+            if (currentSpeech) {
+                speechSynthesis.cancel();
+            }
+
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span class="audio-loading"></span> ' + translations[currentLanguage].playing;
+            button.disabled = true;
+
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.8;
+            utterance.pitch = 1.0;
+
+            utterance.onend = () => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                currentSpeech = null;
+            };
+
+            utterance.onerror = () => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                currentSpeech = null;
+            };
+
+            currentSpeech = utterance;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Play example audio
+        function playExample(verb, button) {
+            if (currentSpeech) {
+                speechSynthesis.cancel();
+            }
+
+            const verbData = verbs.find(v => v.russian === verb);
+            if (!verbData) return;
+
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span class="audio-loading"></span> ' + translations[currentLanguage].playing;
+            button.disabled = true;
+
+            const utterance = new SpeechSynthesisUtterance(verbData.examples.audio);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.7;
+            utterance.pitch = 1.0;
+
+            utterance.onend = () => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                currentSpeech = null;
+            };
+
+            utterance.onerror = () => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                currentSpeech = null;
+            };
+
+            currentSpeech = utterance;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('theme-toggle');
+            
+            if (currentTheme === 'dark') {
+                body.classList.add('light-mode');
+                body.classList.remove('dark-mode');
+                themeToggle.textContent = currentLanguage === 'en' ? '🌙 Dark Mode' : '🌙 ダークモード';
+                currentTheme = 'light';
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.textContent = currentLanguage === 'en' ? '🌙 Light Mode' : '🌙 ライトモード';
+                currentTheme = 'dark';
+            }
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ja' : 'en';
+            updateTexts();
+            renderVerbs(currentFilter);
+            updateInstallButton();
+        }
+
+        // Update all texts based on current language
+        function updateTexts() {
+            const t = translations[currentLanguage];
+            document.getElementById('app-title').textContent = t.title;
+            document.getElementById('app-subtitle').textContent = t.subtitle;
+            document.getElementById('search').placeholder = t.searchPlaceholder;
+            document.getElementById('theme-toggle').textContent = t.themeToggle;
+            document.getElementById('language-toggle').textContent = t.languageToggle;
+            document.getElementById('install-btn').textContent = t.installBtn;
+            document.getElementById('installed-btn').textContent = t.installedBtn;
+            document.getElementById('install-info').textContent = t.installInfo;
+            document.getElementById('contact-text').innerHTML = `${t.contact}<br>
+                <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>`;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('search').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.verb-card');
+                
+                cards.forEach(card => {
+                    const russianWord = card.querySelector('.verb-russian').textContent.toLowerCase();
+                    const translation = card.querySelector('.verb-translation').textContent.toLowerCase();
+                    
+                    if (russianWord.includes(searchTerm) || translation.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            document.getElementById('language-toggle').addEventListener('click', toggleLanguage);
+            document.getElementById('install-btn').addEventListener('click', installApp);
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.getAttribute('data-filter');
+                    renderVerbs(currentFilter);
+                });
+            });
+        }
+
+        // Register service worker
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed: ', error);
+                    });
+            }
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
